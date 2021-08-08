@@ -3,13 +3,26 @@
  */
 package dagger.basic
 
-class App {
-    val greeting: String
-        get() {
-            return "Hello World!"
-        }
+import dagger.Component
+import javax.inject.Inject
+
+
+class Keyboard @Inject constructor()
+
+class Speaker @Inject constructor()
+
+class Computer @Inject constructor(
+    val keyboard: Keyboard,
+    val speaker: Speaker,
+)
+
+@Component
+interface AppComponent {
+    fun getComputer(): Computer
 }
 
+// run project with ./gradlew run
 fun main() {
-    println(App().greeting)
+    val appComponent: AppComponent = DaggerAppComponent.create()
+    val computer: Computer = appComponent.getComputer()
 }
